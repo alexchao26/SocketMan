@@ -33,6 +33,9 @@ const mapDispatchToProps = (dispatch) => ({
     // dispatch a new question to the reducers, triggered by an emitter, NOT a fetch
     dispatch(actions.newQuestionNoFetch(question, answer));
   },
+  updateUserCount(userCount) {
+    dispatch(actions.updateUserCount(userCount));
+  },
 });
 
 class GameRoom extends Component {
@@ -44,13 +47,16 @@ class GameRoom extends Component {
     this.newQuestion = this.newQuestion.bind(this);
 
     // AWS link for server connection
-    this.socket = io.connect('http://socketman.us-east-1.elasticbeanstalk.com/');
+    // console.log('NODE ENV IS', process.env.NODE_ENV);
+    if (process.env.NODE_ENV === 'development') this.socket = io.connect('http://localhost:3000');
+    else this.socket = io.connect('http://socketman.us-east-1.elasticbeanstalk.com/');
   }
 
   componentDidMount() {
     // destructure props
     const {
-      updateLetter, updateDisplayAnswer, incrementFailedGuesses, newQuestionNoFetch, checkWin,
+      updateLetter, updateDisplayAnswer, incrementFailedGuesses,
+      newQuestionNoFetch, checkWin, updateUserCount,
     } = this.props;
 
     // create socket listener for clicked letter
@@ -76,6 +82,10 @@ class GameRoom extends Component {
     this.socket.on('newQuestion', (question, answer) => {
       // console.log('new question SOCKET triggered', question, answer);
       newQuestionNoFetch(question, answer);
+    });
+
+    this.socket.on('userCount', (userCount) => {
+      updateUserCount(userCount);
     });
 
     // trigger newQuestion upon the first compDidMount
