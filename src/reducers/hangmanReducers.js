@@ -20,6 +20,7 @@ const initialState = {
     'The End. (Everytime you lose at hangman, a stick family loses a member)',
   ],
   numberOfFailedGuesses: 0,
+  userCount: 0,
 };
 
 for (let i = 97; i < 123; i += 1) {
@@ -57,6 +58,14 @@ const hangmanReducer = (state = initialState, action) => {
         displayAnswer,
         letters: initialState.letters,
         numberOfFailedGuesses: 0,
+        userCount: state.userCount, // do not reset this value
+      };
+
+    case types.UPDATE_USER_COUNT:
+      // update the userCount key with the payload
+      return {
+        ...state,
+        userCount: action.payload,
       };
 
     case types.UPDATE_DISPLAY_ANSWER:

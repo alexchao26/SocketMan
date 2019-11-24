@@ -45,3 +45,8 @@ export const newQuestionNoFetch = (question, answer) => ({
   payloadQuestion: question,
   payloadAnswer: answer,
 });
+
+export const updateUserCount = (userCount) => ({
+  type: types.UPDATE_USER_COUNT,
+  payload: userCount,
+});

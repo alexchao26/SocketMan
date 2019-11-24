@@ -10,5 +10,4 @@ export const CHECK_WIN = 'CHECK_WIN';
 export const ADD_ROOM = 'ADD_ROOM';
 export const LOAD_ROOMS = 'LOAD_ROOMS';
 export const NEW_QUESTION_NO_FETCH = 'NEW_QUESTION_NO_FETCH';
-// unused
-// export const RESET_GAME = 'RESET_GAME';
+export const UPDATE_USER_COUNT = 'UPDATE_USER_COUNT';

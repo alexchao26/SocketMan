@@ -10,9 +10,14 @@ const mongoFunctions = require('./controllers/mongoController');
 
 const PORT = process.env.PORT || 3000;
 
+let userCount = 0;
+
 // connect to socketio server
 io.on('connection', (socket) => {
   // console.log('\n\nSOCKET ID: ', socket.id);
+  userCount += 1;
+  // console.log('user count', userCount);
+  io.sockets.emit('userCount', userCount);
 
   // when a newQuestion is received, emit it out to the server
   socket.on('newQuestion', (question, answer) => {
@@ -24,6 +29,12 @@ io.on('connection', (socket) => {
   socket.on('clickedLetter', (letter) => {
     // console.log('server recived', letter);
     io.sockets.emit('clickedLetter', letter);
+  });
+
+  socket.on('disconnect', () => {
+    userCount -= 1;
+    // console.log('a user disconnected, count is', userCount);
+    io.sockets.emit('userCount', userCount);
   });
 });
 
