@@ -1,12 +1,12 @@
-# hangman
+# SocketMan
 Websockets based, multiplayer hangman game. Hosted on AWS at http://socketman.us-east-1.elasticbeanstalk.com/
 
 ## Technologies Used
 - React
 - Redux
 - Websockets
-- Express
-- NoSQL (MongoDB)
+- ExpressJS Server
+- NoSQL Database (MongoDB)
 - AWS (Elastic Beanstalk)
 - Webpack
 
