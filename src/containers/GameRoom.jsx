@@ -3,21 +3,16 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import LetterWrapper from './letterWrapper';
-import Clue from '../components/clue';
-import HangViewer from '../components/hangViewer';
-import HangingDude from '../components/HangingDude';
 
-// import * as types from '../constants/actionTypes';
+import LetterWrapper from './LetterWrapper';
+import Clue from '../components/Clue';
+import HangViewer from '../components/HangViewer';
+import HangingDude from '../components/HangingDude';
+import Header from '../components/Header';
 import * as actions from '../actions/actions';
 
 const mapStateToProps = (state) => ({
-  letters: state.hangman.letters,
   dbAnswer: state.hangman.dbAnswer,
-  dbQuestion: state.hangman.dbQuestion,
-  displayAnswer: state.hangman.displayAnswer,
-  hangingPrompts: state.hangman.hangingPrompts,
-  numberOfFailedGuesses: state.hangman.numberOfFailedGuesses,
 });
 
 
@@ -55,7 +50,7 @@ class GameRoom extends Component {
   componentDidMount() {
     // destructure props
     const {
-      updateLetter, updateDisplayAnswer, incrementFailedGuesses, newQuestionNoFetch,
+      updateLetter, updateDisplayAnswer, incrementFailedGuesses, newQuestionNoFetch, checkWin,
     } = this.props;
 
     // create socket listener for clicked letter
@@ -65,11 +60,15 @@ class GameRoom extends Component {
       // dispatch to update letters in store
       updateLetter(letter);
 
+
       // check if answer in state has the letter, this cannot use destructuring because
       // the closure will not allow for new questions/answers!!!
       // eslint-disable-next-line react/destructuring-assignment
       if (this.props.dbAnswer.includes(letter)) updateDisplayAnswer(letter);
       else incrementFailedGuesses();
+
+      // then check wins after letters are updated and letter is validated against dbAnswer
+      checkWin();
     });
 
     // if a newQuestion is emitted, dispatch the new question and answer to update the store
@@ -84,12 +83,6 @@ class GameRoom extends Component {
 
     // handle keypresses (sends to letterClicked method)
     document.addEventListener('keypress', (e) => this.letterClicked(e.key.toLowerCase()));
-  }
-
-  // everytime the dom updates, check if the user has won the game
-  componentDidUpdate() {
-    const { checkWin } = this.props;
-    checkWin();
   }
 
   // if component will unmount, remove the event listener (this is mainly for the hotmod reload)
@@ -128,30 +121,14 @@ class GameRoom extends Component {
   }
 
   render() {
-    // destructure props
-    const {
-      dbQuestion, dbAnswer, hangingPrompts, numberOfFailedGuesses, letters, displayAnswer,
-    } = this.props;
-
     // return all the things and stuff to render
     return (
       <div className="App">
-        <header className="splash__header">
-          <h1 className="splash__title">SocketMan</h1>
-          <span className="splash__version">x2</span>
-        </header>
-        <HangingDude numberOfFailedGuesses={numberOfFailedGuesses} />
-        <LetterWrapper
-          letters={letters}
-          letterClicked={this.letterClicked}
-          answer={dbAnswer}
-          disp={displayAnswer}
-        />
-        <Clue clue={dbQuestion} newQuestion={this.newQuestion} />
-        <HangViewer
-          hang={hangingPrompts}
-          numFailedGuesses={numberOfFailedGuesses}
-        />
+        <Header />
+        <HangingDude />
+        <LetterWrapper letterClicked={this.letterClicked} />
+        <Clue newQuestion={this.newQuestion} />
+        <HangViewer />
       </div>
     );
   }

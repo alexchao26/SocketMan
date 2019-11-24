@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 /**
  * ************************************
  *
@@ -13,8 +12,7 @@
 // import actionType constants
 import * as types from '../constants/actionTypes';
 
-// this action is for updating the letters object in store that tracks all letters
-// of the alphabet
+// this action is for updating the letters object in store that tracks all letters of the alphabet
 export const updateLetter = (letter) => ({
   type: types.UPDATE_LETTER,
   payload: letter,
