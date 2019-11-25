@@ -80,4 +80,6 @@ app.use((err, req, res, next) => {
   res.status(newError.status).send(newError.message);
 });
 
-server.listen(PORT, () => console.log('Server listening on PORT:', PORT));
+server.listen(PORT, () => {
+  if (process.env.NODE_ENV === 'development') console.log('Server listening on PORT:', PORT);
+});

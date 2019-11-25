@@ -13,6 +13,7 @@ import * as actions from '../actions/actions';
 
 const mapStateToProps = (state) => ({
   dbAnswer: state.hangman.dbAnswer,
+  letters: state.hangman.letters,
 });
 
 
@@ -71,7 +72,8 @@ class GameRoom extends Component {
       // the closure will not allow for new questions/answers!!!
       // eslint-disable-next-line react/destructuring-assignment
       if (this.props.dbAnswer.includes(letter)) updateDisplayAnswer(letter);
-      else incrementFailedGuesses();
+      // eslint-disable-next-line react/destructuring-assignment
+      else if (!this.props.letters[letter]) incrementFailedGuesses();
 
       // then check wins after letters are updated and letter is validated against dbAnswer
       checkWin();
