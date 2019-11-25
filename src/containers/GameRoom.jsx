@@ -62,18 +62,15 @@ class GameRoom extends Component {
 
     // create socket listener for clicked letter
     this.socket.on('clickedLetter', (letter) => {
-      // console.log('clickedletteris ', letter);
-
-      // dispatch to update letters in store
-      updateLetter(letter);
-
-
       // check if answer in state has the letter, this cannot use destructuring because
       // the closure will not allow for new questions/answers!!!
       // eslint-disable-next-line react/destructuring-assignment
       if (this.props.dbAnswer.includes(letter)) updateDisplayAnswer(letter);
       // eslint-disable-next-line react/destructuring-assignment
       else if (!this.props.letters[letter]) incrementFailedGuesses();
+
+      // dispatch to update letters in store
+      updateLetter(letter);
 
       // then check wins after letters are updated and letter is validated against dbAnswer
       checkWin();
