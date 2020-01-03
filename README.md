@@ -1,5 +1,5 @@
 # SocketMan
-Websockets based, multiplayer hangman game. Hosted on ~~AWS at http://socketman.us-east-1.elasticbeanstalk.com/~~ heroku at http://socket-man.heroku.com
+Websockets based, multiplayer hangman game. Hosted on ~~AWS at http://socketman.us-east-1.elasticbeanstalk.com/~~ heroku at https://socket-man.herokuapp.com/
 
 ## Technologies Used
 - React
