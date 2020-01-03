@@ -51,7 +51,7 @@ class GameRoom extends Component {
     // AWS link for server connection
     // console.log('NODE ENV IS', process.env.NODE_ENV);
     if (process.env.NODE_ENV === 'development') this.socket = io.connect('http://localhost:3000');
-    else this.socket = io.connect('http://socketman.us-east-1.elasticbeanstalk.com/');
+    else this.socket = io.connect('http://socket-man.heroku.com');
   }
 
   componentDidMount() {
