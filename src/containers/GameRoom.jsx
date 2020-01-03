@@ -11,12 +11,13 @@ import HangingDude from '../components/HangingDude';
 import Header from '../components/Header';
 import * as actions from '../actions/actions';
 
+// map the dbAnswer and letters to check if the pressed letter if within the answer or not
 const mapStateToProps = (state) => ({
   dbAnswer: state.hangman.dbAnswer,
   letters: state.hangman.letters,
 });
 
-
+// map dispatcher actions to reducers
 const mapDispatchToProps = (dispatch) => ({
   updateLetter(letter) {
     dispatch(actions.updateLetter(letter));
