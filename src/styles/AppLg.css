@@ -95,3 +95,9 @@ img {
   color: #424242;
   margin-top: 8PX;
 }
+
+.new-question:hover {
+  color: #90ee02;
+  background-color: #3d00e0;
+  border-color: #000080;
+}
