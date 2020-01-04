@@ -21,6 +21,7 @@ const initialState = {
   ],
   numberOfFailedGuesses: 0,
   userCount: 0,
+  gameoverBoolean: false,
 };
 
 for (let i = 97; i < 123; i += 1) {
@@ -103,9 +104,17 @@ const hangmanReducer = (state = initialState, action) => {
       // >= becuase of button mashing...
       if (numberOfFailedGuesses >= maxNumberOfGuesses) {
         alert('GAME OVER');
+        return {
+          ...state,
+          gameoverBoolean: true,
+        };
       }
       if (state.displayAnswer.join('') === state.dbAnswer.join('')) {
         alert('WINNER WINNER CHICKEN DINNER');
+        return {
+          ...state,
+          gameoverBoolean: true,
+        };
       }
       return { ...state };
 

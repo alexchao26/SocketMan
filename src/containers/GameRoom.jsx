@@ -15,6 +15,7 @@ import * as actions from '../actions/actions';
 const mapStateToProps = (state) => ({
   dbAnswer: state.hangman.dbAnswer,
   letters: state.hangman.letters,
+  gameoverBoolean: state.hangman.gameoverBoolean,
 });
 
 // map dispatcher actions to reducers
@@ -101,13 +102,12 @@ class GameRoom extends Component {
   // change state when letter is selected
   letterClicked(letter) {
     // console.log('letter clicked was:', letter, letter.charCodeAt(0));
-
-    // const { newQuestion } = this.props;
+    const { gameoverBoolean } = this.props;
     // only allow lower case letters, or ENTER for newQuestion
     if (letter === 'enter') {
       // console.log('new question clicked!');
       this.newQuestion();
-    } else if (letter.charCodeAt(0) >= 97 && letter.charCodeAt(0) <= 122) {
+    } else if (!gameoverBoolean && letter.charCodeAt(0) >= 97 && letter.charCodeAt(0) <= 122) {
       this.socket.emit('clickedLetter', letter);
     }
   }
