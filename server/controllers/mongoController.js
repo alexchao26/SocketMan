@@ -22,10 +22,23 @@ mongoConnections()
     });
   });
 
+// set to track which questions have been "used" to prevent repeating ones
+const usedQuestions = new Set();
+
 // get one random document from the q_and_as collection
 mongoController.getNewQandA = async (req, res, next) => {
-  // generate a "random" number and grab that element of the docs cache
-  const randSkip = Math.floor(Math.random() * documentCache.length);
+  // generate a "random" number that is not in the usedQuestions set already
+  let randSkip;
+  do {
+    randSkip = Math.floor(Math.random() * documentCache.length);
+  } while (usedQuestions.has(randSkip));
+
+  // add the random index to the set, if the set is full, empty/clear it
+  usedQuestions.add(randSkip);
+  if (usedQuestions.size === documentCache.length) {
+    usedQuestions.clear();
+  }
+
   // place it on res.locals to persist prompt to next piece of middleware
   res.locals.newQuestion = documentCache[randSkip];
   return next();
