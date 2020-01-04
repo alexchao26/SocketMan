@@ -89,7 +89,9 @@ img {
 
 .new-question {
   background-color: transparent;
-  border: none;
+  border: 0.5px solid #424242;
+  border-radius: 5px;
+  padding: 5px;
   color: #424242;
   margin-top: 8PX;
 }

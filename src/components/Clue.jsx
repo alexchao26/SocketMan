@@ -15,7 +15,9 @@ const Clue = ({ dbQuestion, newQuestion }) => (
     {/*
       button that when clicked will get a new question and emit it to all other users via socketio
      */}
-    <button className="new-question" type="button" onClick={newQuestion}>NEW QUESTION (PRESS ENTER)</button>
+    <button className="new-question" type="button" onClick={newQuestion}>
+      NEW QUESTION (OR PRESS ENTER)
+    </button>
   </div>
 );
 

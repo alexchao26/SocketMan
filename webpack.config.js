@@ -30,6 +30,10 @@ module.exports = {
     publicPath: 'http://localhost:3000/dist/',
     hot: true,
     proxy: {
+      '/': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
