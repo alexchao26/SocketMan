@@ -3,13 +3,16 @@
 const mongoController = {};
 const mongoConnections = require('../models/mongoConnection');
 
-// const { qAndAModel } = mongoConnections();
+// connecting to the database upon server start to prevent this from happening on every request
+let qAndAModel;
+mongoConnections().then((models) => {
+  qAndAModel = models.qAndAModel;
+});
+
 
 // get one random document from the q_and_as collection
 mongoController.getNewQandA = async (req, res, next) => {
-  // connect to the database and destructure out the qAndA model
-  const { qAndAModel } = await mongoConnections();
-
+  // note this counting and using next seems really not random...
   // count the number of documents/entries in the mongoDB
   qAndAModel.countDocuments((err, count) => {
     if (err) {

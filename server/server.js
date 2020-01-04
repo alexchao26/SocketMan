@@ -39,15 +39,17 @@ io.on('connection', (socket) => {
 });
 
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // serve up statics (build, imgs)
 app.use('/dist', express.static(path.resolve(__dirname, '../dist')));
 
 // endpoint to grab a new question and answer
-app.get('/newPrompt', mongoFunctions.getNewQandA, (req, res) => {
-  res.status(300).json(res.locals.newQuestion);
-});
+app.get('/newPrompt',
+  mongoFunctions.getNewQandA,
+  (req, res) => {
+    res.status(300).json(res.locals.newQuestion);
+  });
 
 // endpoint for default landing page at '/' endpoint
 app.get('/', (req, res) => {

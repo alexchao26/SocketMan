@@ -120,9 +120,9 @@ class GameRoom extends Component {
       },
     })
       .then((res) => res.json())
-      .then((json) => json)
+      .then((json) => json) // return the response out to qAndA variable
       // eslint-disable-next-line no-console
-      .catch((err) => console.log('FETCH ERRORRRRRR', err));
+      .catch((err) => console.log('Error fetching new question from the database: ', err));
 
     const { question, answer } = qAndA;
     this.socket.emit('newQuestion', question, answer);
