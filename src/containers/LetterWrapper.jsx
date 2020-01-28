@@ -8,7 +8,7 @@ const mapStateToProps = (state) => ({
 });
 
 const LetterWrapper = ({ letters, letterClicked }) => (
-  <div className="letterWrapper">
+  <div className="letter-wrapper">
     <AnswerViewer />
     <LetterSelector
       letters={letters}
