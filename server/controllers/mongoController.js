@@ -33,14 +33,22 @@ mongoController.getNewQandA = async (req, res, next) => {
     randSkip = Math.floor(Math.random() * documentCache.length);
   } while (usedQuestions.has(randSkip));
 
+  // place it on res.locals to persist prompt to next piece of middleware
+  res.locals.newQuestion = documentCache[randSkip];
+
   // add the random index to the set, if the set is full, empty/clear it
   usedQuestions.add(randSkip);
   if (usedQuestions.size === documentCache.length) {
     usedQuestions.clear();
+    // also want to refresh from the database if all of the questions have been used up
+    qAndAModel.find({}, (err, docs) => {
+      if (err) console.log('error querying database from mongoController');
+      console.log('updating doc cache!');
+      documentCache = docs;
+      // return next(); // I thnk I can get away with allowing this to be async
+    });
   }
 
-  // place it on res.locals to persist prompt to next piece of middleware
-  res.locals.newQuestion = documentCache[randSkip];
   return next();
 };
 
