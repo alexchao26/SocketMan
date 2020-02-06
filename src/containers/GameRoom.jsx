@@ -9,6 +9,7 @@ import Clue from '../components/Clue';
 import HangViewer from '../components/HangViewer';
 import HangingDude from '../components/HangingDude';
 import Header from '../components/Header';
+import GameOver from '../components/GameOver';
 import * as actions from '../actions/actions';
 
 // map the dbAnswer and letters to check if the pressed letter if within the answer or not
@@ -129,6 +130,7 @@ class GameRoom extends Component {
   }
 
   render() {
+    const { gameoverBoolean } = this.props;
     // return all the things and stuff to render
     return (
       <div className="App">
@@ -137,6 +139,7 @@ class GameRoom extends Component {
         <LetterWrapper letterClicked={this.letterClicked} />
         <Clue newQuestion={this.newQuestion} />
         <HangViewer />
+        <GameOver newQuestion={this.newQuestion} />
       </div>
     );
   }
