@@ -5,7 +5,7 @@ import hangmanReducer from './hangmanReducers';
 
 // combine reducers
 const reducers = combineReducers({
-  // key value pairs of name of reducer catagory: imported above
+  // key value pairs of name of reducer category: imported above
   hangman: hangmanReducer,
 });
 

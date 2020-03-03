@@ -9,24 +9,29 @@ let qAndAModel;
 let documentCache;
 
 // connect to database, set qAndAModel and docuemntCount variables
-mongoConnections()
-  .then((models) => {
+const dbConnectionPromise = mongoConnections()
+  .then((models) => new Promise((resolve) => {
     qAndAModel = models.qAndAModel;
 
     // note: this was in an attempt to have truly randomized queries
     // note: I'm not confident in how mongoose skips randomize
     // cache all the docs on the server @ startup
     qAndAModel.find({}, (err, docs) => {
-      // console.log('all docs are', docs);
+      console.log('docs loaded');
       documentCache = docs;
+      resolve();
     });
-  });
+  }));
 
 // set to track which questions have been "used" to prevent repeating ones
 const usedQuestions = new Set();
 
 // get one random document from the q_and_as collection
 mongoController.getNewQandA = async (req, res, next) => {
+  // need to delay the initial question load if the db is not connecting quickly
+  // this is hacky but leverages async/await and promises decently...
+  if (!documentCache) await dbConnectionPromise;
+
   // generate a "random" number that is not in the usedQuestions set already
   let randSkip;
   do {
@@ -45,10 +50,10 @@ mongoController.getNewQandA = async (req, res, next) => {
       if (err) console.log('error querying database from mongoController');
       console.log('updating doc cache!');
       documentCache = docs;
-      // return next(); // I thnk I can get away with allowing this to be async
     });
   }
 
+  // code for getting newQuestion is synchronous so no need to wait for the cache refresh
   return next();
 };
 

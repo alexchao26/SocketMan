@@ -6,8 +6,7 @@ const mapStateToProps = (state) => ({
   winnerBoolean: state.hangman.winnerBoolean,
 });
 
-
-const GameOver = ({ gameoverBoolean, winnerBoolean, newQuestion }) => (
+const GameOver = ({ gameoverBoolean, winnerBoolean, fetchNewQuestion }) => (
   <div className={`gameover ${gameoverBoolean && 'isOver'}`}>
     {
         winnerBoolean
@@ -15,7 +14,7 @@ const GameOver = ({ gameoverBoolean, winnerBoolean, newQuestion }) => (
           : 'YOU LOSE!'
       }
     <br />
-    <button className="new-question win-box" type="button" onClick={newQuestion}>
+    <button className="new-question win-box" type="button" onClick={fetchNewQuestion}>
       NEW QUESTION (OR PRESS ENTER)
     </button>
   </div>

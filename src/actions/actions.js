@@ -40,8 +40,8 @@ export const checkWin = () => ({
 });
 
 // grab a new question from the mongoDB
-export const newQuestionNoFetch = (question, answer) => ({
-  type: types.NEW_QUESTION,
+export const newQuestionAndAnswer = (question, answer) => ({
+  type: types.NEW_QUESTION_AND_ANSWER,
   payloadQuestion: question,
   payloadAnswer: answer,
 });
@@ -50,3 +50,19 @@ export const updateUserCount = (userCount) => ({
   type: types.UPDATE_USER_COUNT,
   payload: userCount,
 });
+
+// thunk, return a function that invokes dispatch param w/ proper async control
+export const thunkQuestionAnswerFetch = () => ((dispatch) => (
+  fetch('/newPrompt', {
+    'Cache-Control': 'no-cache', // no caching or else this will grab the cached (old) question
+    'Content-Type': 'application/json',
+  })
+    .then((res) => res.json())
+    .then((json) => {
+      dispatch({
+        type: types.THUNK_INITIAL_QUESTION_LOAD,
+        payload: json,
+      });
+    })
+    .catch((err) => console.log('Error on initial question load', err))
+));

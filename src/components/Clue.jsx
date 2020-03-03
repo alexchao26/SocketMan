@@ -6,7 +6,7 @@ const mapStateToProps = (state) => ({
 });
 
 // props coming down include a clue string and a function that gets a newQuestion
-const Clue = ({ dbQuestion, newQuestion }) => (
+const Clue = ({ dbQuestion, fetchNewQuestion }) => (
   <div className="clue">
     <h5 className="clue__title">CLUE</h5>
     {/* render the clue string */}
@@ -15,7 +15,7 @@ const Clue = ({ dbQuestion, newQuestion }) => (
     {/*
       button that when clicked will get a new question and emit it to all other users via socketio
      */}
-    <button className="new-question" type="button" onClick={newQuestion}>
+    <button className="new-question" type="button" onClick={fetchNewQuestion}>
       NEW QUESTION (OR PRESS ENTER)
     </button>
   </div>
