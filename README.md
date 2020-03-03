@@ -3,11 +3,11 @@ Websockets based, multiplayer hangman game. Hosted on ~~AWS at http://socketman.
 
 ## Technologies Used
 - React
-- Redux
+- Redux & Redux-Thunk
 - Websockets
 - ExpressJS Server
 - NoSQL Database (MongoDB)
-- AWS (Elastic Beanstalk)
+~~- AWS (Elastic Beanstalk)~~
 - Webpack
 
 
@@ -29,4 +29,5 @@ Websockets based, multiplayer hangman game. Hosted on ~~AWS at http://socketman.
         |--- LetterSelector
       |--- Clue
       |--- HangViewer
+      |--- GameOver
 ```
