@@ -40,7 +40,6 @@ class GameRoom extends Component {
 
     // method to handle user inputs
     this.letterClicked = this.letterClicked.bind(this);
-    this.fetchNewQuestion = this.fetchNewQuestion.bind(this);
 
     // URL to socket server, in this case it's the same server that's serving the entire app
     this.socket = io.connect('/');
@@ -81,9 +80,9 @@ class GameRoom extends Component {
       updateUserCount(userCount);
     });
 
-    // trigger newQuestion upon the first compDidMount
+    // trigger newQuestion endpoint upon the first compDidMount
     // invoke thunk for initial question load
-    this.fetchNewQuestion();
+    thunkQuestionAnswerFetch();
 
     // handle keypresses (sends to letterClicked method)
     document.addEventListener('keypress', (e) => this.letterClicked(e.key.toLowerCase()));
@@ -95,22 +94,14 @@ class GameRoom extends Component {
     document.removeEventListener('keypress', (e) => this.letterClicked(e.key.toLowerCase()));
   }
 
-  fetchNewQuestion() {
-    const { thunkQuestionAnswerFetch } = this.props;
-    thunkQuestionAnswerFetch().then(() => {
-      const { dbQuestion, dbAnswer } = this.props;
-      this.socket.emit('newQuestion', dbQuestion, dbAnswer);
-    });
-  }
-
   // change state when letter is selected
   letterClicked(letter) {
     // console.log('letter clicked was:', letter, letter.charCodeAt(0));
-    const { gameoverBoolean } = this.props;
+    const { gameoverBoolean, thunkQuestionAnswerFetch } = this.props;
     // only allow lower case letters, or ENTER for newQuestion
     if (letter === 'enter') {
       // console.log('new question clicked!');
-      this.fetchNewQuestion();
+      thunkQuestionAnswerFetch();
     } else if (!gameoverBoolean && letter.charCodeAt(0) >= 97 && letter.charCodeAt(0) <= 122) {
       this.socket.emit('clickedLetter', letter);
     }
@@ -124,9 +115,9 @@ class GameRoom extends Component {
         <Header />
         <HangingDude />
         <LetterWrapper letterClicked={this.letterClicked} />
-        <Clue fetchNewQuestion={this.fetchNewQuestion} />
+        <Clue />
         <HangViewer />
-        <GameOver fetchNewQuestion={this.fetchNewQuestion} />
+        <GameOver />
       </div>
     );
   }

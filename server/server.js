@@ -5,7 +5,6 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-const bodyParser = require('body-parser');
 const mongoFunctions = require('./controllers/mongoController');
 
 const PORT = process.env.PORT || 3000;
@@ -20,14 +19,14 @@ io.on('connection', (socket) => {
   io.sockets.emit('userCount', userCount);
 
   // when a newQuestion is received, emit it out to the server
-  socket.on('newQuestion', (question, answer) => {
-    // console.log('server received new question', question, answer);
-    io.sockets.emit('newQuestion', question, answer);
-  });
+  // socket.on('newQuestion', (question, answer) => {
+  //   // console.log('server received new question', question, answer);
+  //   socket.broadcast.emit('newQuestion', question, answer);
+  // });
 
   // when a clickedLetter is received, emit it out to the server
   socket.on('clickedLetter', (letter) => {
-    // console.log('server recived', letter);
+    // console.log('server received', letter);
     io.sockets.emit('clickedLetter', letter);
   });
 
@@ -48,7 +47,11 @@ app.use('/dist', express.static(path.resolve(__dirname, '../dist')));
 app.get('/newPrompt',
   mongoFunctions.getNewQandA,
   (req, res) => {
-    res.status(300).json(res.locals.newQuestion);
+    // console.log(res.locals.newQuestion);
+    const { question, answer } = res.locals.newQuestion;
+    // emit to all sockets to trigger consistent question & answer re-renders
+    io.sockets.emit('newQuestion', question, answer);
+    res.sendStatus(300);
   });
 
 // endpoint for default landing page at '/' endpoint

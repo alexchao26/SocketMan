@@ -53,16 +53,7 @@ export const updateUserCount = (userCount) => ({
 
 // thunk, return a function that invokes dispatch param w/ proper async control
 export const thunkQuestionAnswerFetch = () => ((dispatch) => (
-  fetch('/newPrompt', {
-    'Cache-Control': 'no-cache', // no caching or else this will grab the cached (old) question
-    'Content-Type': 'application/json',
-  })
-    .then((res) => res.json())
-    .then((json) => {
-      dispatch({
-        type: types.THUNK_INITIAL_QUESTION_LOAD,
-        payload: json,
-      });
-    })
-    .catch((err) => console.log('Error on initial question load', err))
+  // don't even need options anymore b/c this is just to prompt the server emit out a new question
+  fetch('/newPrompt')
+    .catch((err) => console.log('Error getting new questions and answers :(', err))
 ));

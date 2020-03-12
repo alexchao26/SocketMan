@@ -43,12 +43,14 @@ const hangmanReducer = (state = initialState, action) => {
   let displayAnswer;
   let numberOfFailedGuesses;
   const maxNumberOfGuesses = state.hangingPrompts.length - 1;
-  // console.log('store\'s state is \n', state);
 
   switch (action.type) {
     case types.NEW_QUESTION_AND_ANSWER:
       dbQuestion = action.payloadQuestion;
-      dbAnswer = action.payloadAnswer;
+      // eslint-disable-next-line no-nested-ternary
+      dbAnswer = typeof action.payloadAnswer === 'string'
+        ? action.payloadAnswer.split('')
+        : action.payloadAnswer;
       // console.log('answer and db answer in reducer', action.payloadAnswer, dbAnswer);
       displayAnswer = dbAnswer.map(() => '_');
       // reset the entire game (all letters and failed guesses reset)
@@ -118,22 +120,6 @@ const hangmanReducer = (state = initialState, action) => {
         };
       }
       return { ...state };
-
-    // handle async action dispatch that contains a new question and answer
-    case types.THUNK_INITIAL_QUESTION_LOAD:
-      dbQuestion = action.payload.question;
-      dbAnswer = action.payload.answer.split('');
-      displayAnswer = dbAnswer.map(() => '_');
-      // reset the entire game (all letters and failed guesses reset)
-      return {
-        ...initialState,
-        dbQuestion,
-        dbAnswer,
-        displayAnswer,
-        letters: initialState.letters,
-        numberOfFailedGuesses: 0,
-        userCount: state.userCount, // do not reset this value
-      };
 
     default:
       // return the initial state if action.type does not match any of cases
