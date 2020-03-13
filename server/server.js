@@ -50,7 +50,7 @@ app.get('/newPrompt',
     // console.log(res.locals.newQuestion);
     const { question, answer } = res.locals.newQuestion;
     // emit to all sockets to trigger consistent question & answer re-renders
-    io.sockets.emit('newQuestion', question, answer);
+    io.emit('newQuestion', question, answer);
     res.sendStatus(300);
   });
 
