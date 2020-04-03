@@ -1,13 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import * as actions from '../actions/actions';
 
 const mapStateToProps = (state) => ({
   gameoverBoolean: state.hangman.gameoverBoolean,
   winnerBoolean: state.hangman.winnerBoolean,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  thunkQuestionAnswerFetch: () => dispatch(actions.thunkQuestionAnswerFetch()),
+});
 
-const GameOver = ({ gameoverBoolean, winnerBoolean, newQuestion }) => (
+
+const GameOver = ({ gameoverBoolean, winnerBoolean, thunkQuestionAnswerFetch }) => (
   <div className={`gameover ${gameoverBoolean && 'isOver'}`}>
     {
         winnerBoolean
@@ -15,9 +20,9 @@ const GameOver = ({ gameoverBoolean, winnerBoolean, newQuestion }) => (
           : 'YOU LOSE!'
       }
     <br />
-    <button className="new-question win-box" type="button" onClick={newQuestion}>
+    <button className="new-question win-box" type="button" onClick={thunkQuestionAnswerFetch}>
       NEW QUESTION (OR PRESS ENTER)
     </button>
   </div>
 );
-export default connect(mapStateToProps)(GameOver);
+export default connect(mapStateToProps, mapDispatchToProps)(GameOver);

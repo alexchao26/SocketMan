@@ -14,41 +14,32 @@ import * as actions from '../actions/actions';
 
 // map the dbAnswer and letters to check if the pressed letter if within the answer or not
 const mapStateToProps = (state) => ({
+  dbQuestion: state.hangman.dbQuestion,
   dbAnswer: state.hangman.dbAnswer,
   letters: state.hangman.letters,
   gameoverBoolean: state.hangman.gameoverBoolean,
+  thunkQuestionAnswerFetch: state.hangman.thunkQuestionAnswerFetch,
 });
 
 // map dispatcher actions to reducers
 const mapDispatchToProps = (dispatch) => ({
-  updateLetter(letter) {
-    dispatch(actions.updateLetter(letter));
-  },
-  updateDisplayAnswer(letter) {
-    dispatch(actions.updateDisplayAnswer(letter));
-  },
-  incrementFailedGuesses() {
-    dispatch(actions.incrementFailedGuesses());
-  },
-  checkWin() {
-    dispatch(actions.checkWin());
-  },
-  newQuestionNoFetch(question, answer) {
-    // dispatch a new question to the reducers, triggered by an emitter, NOT a fetch
-    dispatch(actions.newQuestionNoFetch(question, answer));
-  },
-  updateUserCount(userCount) {
-    dispatch(actions.updateUserCount(userCount));
-  },
+  updateLetter: (letter) => dispatch(actions.updateLetter(letter)),
+  updateDisplayAnswer: (letter) => dispatch(actions.updateDisplayAnswer(letter)),
+  incrementFailedGuesses: () => dispatch(actions.incrementFailedGuesses()),
+  checkWin: () => dispatch(actions.checkWin()),
+  newQuestionAndAnswer: (question, answer) => (
+    dispatch(actions.newQuestionAndAnswer(question, answer))
+  ),
+  updateUserCount: (userCount) => dispatch(actions.updateUserCount(userCount)),
+  thunkQuestionAnswerFetch: () => dispatch(actions.thunkQuestionAnswerFetch()),
 });
 
 class GameRoom extends Component {
   constructor(props) {
     super(props);
 
-    // two methods that handle user inputs
+    // method to handle user inputs
     this.letterClicked = this.letterClicked.bind(this);
-    this.newQuestion = this.newQuestion.bind(this);
 
     // URL to socket server, in this case it's the same server that's serving the entire app
     this.socket = io.connect('/');
@@ -58,17 +49,18 @@ class GameRoom extends Component {
     // destructure props
     const {
       updateLetter, updateDisplayAnswer, incrementFailedGuesses,
-      newQuestionNoFetch, checkWin, updateUserCount,
+      newQuestionAndAnswer, checkWin, updateUserCount, thunkQuestionAnswerFetch,
     } = this.props;
 
     // create socket listener for clicked letter
     this.socket.on('clickedLetter', (letter) => {
-      // check if answer in state has the letter, this cannot use destructuring because
-      // the closure will not allow for new questions/answers!!!
-      // eslint-disable-next-line react/destructuring-assignment
-      if (this.props.dbAnswer.includes(letter)) updateDisplayAnswer(letter);
-      // eslint-disable-next-line react/destructuring-assignment
-      else if (!this.props.letters[letter]) incrementFailedGuesses();
+      // need to destructure in here to avoid stale dbAnswer & letters due to closure to
+      // the scope of compDidMount
+      const { dbAnswer, letters } = this.props;
+
+      // check if answer in state has the letter
+      if (dbAnswer.includes(letter)) updateDisplayAnswer(letter);
+      else if (!letters[letter]) incrementFailedGuesses();
 
       // dispatch to update letters in store
       updateLetter(letter);
@@ -81,19 +73,21 @@ class GameRoom extends Component {
     // this is to sync up all user's redux stores!
     this.socket.on('newQuestion', (question, answer) => {
       // console.log('new question SOCKET triggered', question, answer);
-      newQuestionNoFetch(question, answer);
+      newQuestionAndAnswer(question, answer);
     });
 
     this.socket.on('userCount', (userCount) => {
       updateUserCount(userCount);
     });
 
-    // trigger newQuestion upon the first compDidMount
-    this.newQuestion();
+    // trigger newQuestion endpoint upon the first compDidMount
+    // invoke thunk for initial question load
+    thunkQuestionAnswerFetch();
 
     // handle keypresses (sends to letterClicked method)
     document.addEventListener('keypress', (e) => this.letterClicked(e.key.toLowerCase()));
   }
+
 
   // if component will unmount, remove the event listener (this is mainly for the hotmod reload)
   componentWillUnmount() {
@@ -103,43 +97,27 @@ class GameRoom extends Component {
   // change state when letter is selected
   letterClicked(letter) {
     // console.log('letter clicked was:', letter, letter.charCodeAt(0));
-    const { gameoverBoolean } = this.props;
+    const { gameoverBoolean, thunkQuestionAnswerFetch } = this.props;
     // only allow lower case letters, or ENTER for newQuestion
     if (letter === 'enter') {
       // console.log('new question clicked!');
-      this.newQuestion();
+      thunkQuestionAnswerFetch();
     } else if (!gameoverBoolean && letter.charCodeAt(0) >= 97 && letter.charCodeAt(0) <= 122) {
       this.socket.emit('clickedLetter', letter);
     }
   }
 
-  async newQuestion() {
-    const qAndA = await fetch('/newPrompt', {
-      headers: {
-        'Cache-Control': 'no-cache', // no caching or else this will grab the cached (old) question
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => json) // return the response out to qAndA variable
-      // eslint-disable-next-line no-console
-      .catch((err) => console.log('Error fetching new question from the database: ', err));
-
-    const { question, answer } = qAndA;
-    this.socket.emit('newQuestion', question, answer);
-  }
 
   render() {
-    const { gameoverBoolean } = this.props;
     // return all the things and stuff to render
     return (
       <div className="App">
         <Header />
         <HangingDude />
         <LetterWrapper letterClicked={this.letterClicked} />
-        <Clue newQuestion={this.newQuestion} />
+        <Clue />
         <HangViewer />
-        <GameOver newQuestion={this.newQuestion} />
+        <GameOver />
       </div>
     );
   }
