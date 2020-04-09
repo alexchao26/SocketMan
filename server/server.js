@@ -5,24 +5,21 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+// place environment variables on process.env, invoked as early on in server as possible
+require('dotenv').config();
+
 const mongoFunctions = require('./controllers/mongoController');
 
 const PORT = process.env.PORT || 3000;
 
 let userCount = 0;
 
-// connect to socketio server
+// connect to socket-io server
 io.on('connection', (socket) => {
   // console.log('\n\nSOCKET ID: ', socket.id);
   userCount += 1;
   // console.log('user count', userCount);
   io.sockets.emit('userCount', userCount);
-
-  // when a newQuestion is received, emit it out to the server
-  // socket.on('newQuestion', (question, answer) => {
-  //   // console.log('server received new question', question, answer);
-  //   socket.broadcast.emit('newQuestion', question, answer);
-  // });
 
   // when a clickedLetter is received, emit it out to the server
   socket.on('clickedLetter', (letter) => {
@@ -74,7 +71,7 @@ app.all('*', (req, res) => {
  * Status value should be a status code & message value should be a string describing the error
  * and location/file in which the error was invoked from
  */
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   const defaultError = {
     log: 'Error caught by Global Error Handler',
     message: 'Unknown Middleware Error occured',

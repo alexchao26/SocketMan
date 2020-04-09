@@ -1,37 +1,27 @@
-/* eslint-disable camelcase */
-const mongoConnections = require('../models/mongoConnection');
+const { qAndAModel } = require('../models/mongoConnection');
 
 const mongoController = {};
 
-// connecting to the database upon server start to prevent this from happening on every request
-let qAndAModel;
 // same idea for document count, do it at server-startup & only then
 let documentCache;
 
-// connect to database, set qAndAModel and docuemntCount variables
-const dbConnectionPromise = mongoConnections()
-  .then((models) => new Promise((resolve) => {
-    qAndAModel = models.qAndAModel;
-
-    // note: this was in an attempt to have truly randomized queries
-    // note: I'm not confident in how mongoose skips randomize
-    // cache all the docs on the server @ startup
-    qAndAModel.find({}, (err, docs) => {
-      console.log('docs loaded');
-      documentCache = docs;
-      resolve();
-    });
-  }));
+// note: this was in an attempt to have truly randomized queries
+// note: I'm not confident in how mongoose skips randomize
+// cache all the docs on the server @ startup
+// note: this also relies on built-in async mongo handling for connecting to DB before querying it
+qAndAModel.find({}, (err, docs) => {
+  if (err) {
+    return console.log('error in mongoose find method', err);
+  }
+  console.log('docs loaded');
+  documentCache = docs;
+});
 
 // set to track which questions have been "used" to prevent repeating ones
 const usedQuestions = new Set();
 
 // get one random document from the q_and_as collection
 mongoController.getNewQandA = async (req, res, next) => {
-  // need to delay the initial question load if the db is not connecting quickly
-  // this is hacky but leverages async/await and promises decently...
-  if (!documentCache) await dbConnectionPromise;
-
   // generate a "random" number that is not in the usedQuestions set already
   let randSkip;
   do {
