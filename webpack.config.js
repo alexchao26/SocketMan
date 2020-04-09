@@ -21,13 +21,13 @@ module.exports = {
   resolve: { extensions: ['*', '.js', '.jsx'] },
   output: {
     path: path.resolve(__dirname, 'dist/'),
-    publicPath: '/dist/',
+    publicPath: '/',
     filename: 'bundle.js',
   },
   devServer: {
     historyApiFallback: true,
-    contentBase: path.join(__dirname, 'public/'),
-    publicPath: 'http://localhost:3000/dist/',
+    contentBase: path.join(__dirname, 'src/'),
+    publicPath: 'http://localhost:3000/',
     hot: true,
     proxy: {
       '/': {

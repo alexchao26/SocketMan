@@ -38,7 +38,8 @@ io.on('connection', (socket) => {
 app.use(express.json());
 
 // serve up statics (build, imgs)
-app.use('/dist', express.static(path.resolve(__dirname, '../dist')));
+app.use(express.static(path.resolve(__dirname, '../dist'))); // bundle
+app.use(express.static(path.resolve(__dirname, '../src/assets'))); // images
 
 // endpoint to grab a new question and answer
 app.get('/newPrompt',
@@ -53,7 +54,7 @@ app.get('/newPrompt',
 
 // endpoint for default landing page at '/' endpoint
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../public/index.html'));
+  res.sendFile(path.resolve(__dirname, '../src/index.html'));
 });
 
 /**

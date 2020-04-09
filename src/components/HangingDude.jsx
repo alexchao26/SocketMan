@@ -17,7 +17,7 @@ const HangingDude = ({ numberOfFailedGuesses }) => {
   return (
     <img
       alt="hangman dude"
-      src={`../dist/imgs/figure${figureNumber}.png`}
+      src={`/imgs/figure${figureNumber}.png`}
     />
   );
 };
