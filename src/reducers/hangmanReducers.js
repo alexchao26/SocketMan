@@ -22,6 +22,7 @@ const initialState = {
   userCount: 0,
   gameoverBoolean: false,
   winnerBoolean: false,
+  userIsMobile: /iPhone|iPad|iPod|Android/i.test(navigator.userAgent),
 };
 
 for (let i = 97; i < 123; i += 1) {

@@ -52,10 +52,10 @@ export const updateUserCount = (userCount) => ({
 });
 
 // thunk, return a function that invokes dispatch param w/ proper async control
-export const thunkQuestionAnswerFetch = () => ((dispatch) => (
+export const thunkQuestionAnswerFetch = () => (dispatch) => (
   // don't even need options anymore b/c this is just to prompt the server emit out a new question
   fetch('/newPrompt', {
     cache: 'no-store',
   })
     .catch((err) => console.log('Error getting new questions and answers :(', err))
-));
+);

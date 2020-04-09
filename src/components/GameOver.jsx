@@ -5,6 +5,7 @@ import * as actions from '../actions/actions';
 const mapStateToProps = (state) => ({
   gameoverBoolean: state.hangman.gameoverBoolean,
   winnerBoolean: state.hangman.winnerBoolean,
+  userIsMobile: state.hangman.userIsMobile,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -12,7 +13,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-const GameOver = ({ gameoverBoolean, winnerBoolean, thunkQuestionAnswerFetch }) => (
+const GameOver = ({
+  gameoverBoolean, winnerBoolean, thunkQuestionAnswerFetch, userIsMobile,
+}) => (
   <div className={`gameover ${gameoverBoolean && 'isOver'}`}>
     {
         winnerBoolean
@@ -21,7 +24,7 @@ const GameOver = ({ gameoverBoolean, winnerBoolean, thunkQuestionAnswerFetch }) 
       }
     <br />
     <button className="new-question win-box" type="button" onClick={thunkQuestionAnswerFetch}>
-      NEW QUESTION (OR PRESS ENTER)
+      {userIsMobile ? 'NEW QUESTION' : 'NEW QUESTION (OR PRESS ENTER)'}
     </button>
   </div>
 );
