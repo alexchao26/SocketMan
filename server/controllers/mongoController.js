@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
+const mongoConnections = require('../models/mongoConnection');
 
 const mongoController = {};
-const mongoConnections = require('../models/mongoConnection');
 
 // connecting to the database upon server start to prevent this from happening on every request
 let qAndAModel;

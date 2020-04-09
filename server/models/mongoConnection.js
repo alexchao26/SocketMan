@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('dotenv').config(); // place environment variables on process.env
 
 // require in models
 const qAndAModel = require('./mongoModel');
@@ -8,7 +9,7 @@ const qAndAModel = require('./mongoModel');
 module.exports = async () => {
   // internal pool handling set to 5 connections?
   await mongoose.connect(
-    'mongodb+srv://chao:hackMeIfYouDare@cluster0-rhj6j.mongodb.net/test?retryWrites=true&w=majority',
+    process.env.MONGO_URI,
     {
       // these options are just to get rid of some deprecation warnings from mongo...
       useNewUrlParser: true,
