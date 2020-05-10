@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node server/server.js",
-    "productionstart": "NODE_ENV=production node server/server.js",
-    "preproductionstart": "npm run build",
+    "production-run": "NODE_ENV=production npm run build && node server/server.js",
     "build": "webpack --mode production",
     "dev": "NODE_ENV=development nodemon server/server.js & webpack-dev-server --open",
     "test": "jest --verbose"

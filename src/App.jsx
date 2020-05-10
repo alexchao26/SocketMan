@@ -1,4 +1,6 @@
 import React from 'react';
+import { hot } from 'react-hot-loader';
+
 import './styles/App.css';
 import './styles/AppLg.css';
 import { Route } from 'react-router-dom';
@@ -9,4 +11,4 @@ const App = () => (
   <Route path="/" component={GameRoom} />
 );
 
-export default App;
+export default hot(module)(App);

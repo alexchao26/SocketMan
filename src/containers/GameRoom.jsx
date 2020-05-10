@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-filename-extension */
 import React, { Component } from 'react';
-import { hot } from 'react-hot-loader';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 
@@ -123,4 +121,4 @@ class GameRoom extends Component {
   }
 }
 
-export default hot(module)(connect(mapStateToProps, mapDispatchToProps)(GameRoom));
+export default connect(mapStateToProps, mapDispatchToProps)(GameRoom);
