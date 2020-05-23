@@ -13,7 +13,7 @@ qAndAModel.find({}, (err, docs) => {
   if (err) {
     return console.log('error in mongoose find method', err);
   }
-  console.log('docs loaded');
+  if (process.env.NODE_ENV === 'development') console.log('docs loaded');
   documentCache = docs;
 });
 
