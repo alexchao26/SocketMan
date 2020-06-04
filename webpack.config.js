@@ -20,6 +20,10 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.png$/,
+        use: ['url-loader'],
+      },
     ],
   },
   resolve: { extensions: ['*', '.js', '.jsx'] },
