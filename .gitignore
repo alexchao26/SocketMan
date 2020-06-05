@@ -61,5 +61,7 @@ typings/
 
 # next.js build output
 .next
-dist/bundle.js
 .vscode/
+
+!dist/favicon.png
+dist/

@@ -38,8 +38,10 @@ io.on('connection', (socket) => {
 app.use(express.json());
 
 // serve up statics (build, imgs)
-app.use(express.static(path.resolve(__dirname, '../dist'))); // bundle
-app.use(express.static(path.resolve(__dirname, '../src/assets'))); // images
+// webpack build
+app.use(express.static(path.resolve(__dirname, '../dist')));
+// favicon
+app.get('/favicon.png', (req, res) => res.sendFile(path.resolve(__dirname, '../src/assets/favicon.png')));
 
 // endpoint to grab a new question and answer
 app.get('/newPrompt',
