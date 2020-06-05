@@ -37,11 +37,8 @@ io.on('connection', (socket) => {
 
 app.use(express.json());
 
-// serve up statics (build, imgs)
-// webpack build
+// serve up statics (build, imgs); i.e. webpack output
 app.use(express.static(path.resolve(__dirname, '../dist')));
-// favicon
-app.get('/favicon.png', (req, res) => res.sendFile(path.resolve(__dirname, '../src/assets/favicon.png')));
 
 // endpoint to grab a new question and answer
 app.get('/newPrompt',

@@ -63,5 +63,5 @@ typings/
 .next
 .vscode/
 
+dist/*
 !dist/favicon.png
-dist/
