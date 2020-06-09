@@ -35,14 +35,24 @@ io.on('connection', (socket) => {
   });
 });
 
+// Flow log for development environment
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`FLOW TEST: ${req.method} ${req.url}\nBODY: ${JSON.stringify(req.body, null, 2)}`);
+  }
+  next();
+});
 
 app.use(express.json());
 
 // for requests coming into the '/' endpoint (via .use), serve up the gzipped version if found in
 // the dist folder
-app.use(expressStaticGzip(path.join(__dirname, '../dist'), { index: false }));
-// serve up statics (build, imgs); i.e. webpack output
-app.use(express.static(path.join(__dirname, '../dist')));
+app.use(expressStaticGzip(path.join(__dirname, '../dist'), {
+  index: false, // skip over index.html
+  // cache for 4 weeks
+  // cache busting is achieved via the webpack build (html webpack plugin & content base hashing)
+  maxAge: 1000 * 2419200,
+}));
 
 // endpoint to grab a new question and answer
 app.get('/newPrompt',
@@ -57,7 +67,7 @@ app.get('/newPrompt',
 
 // endpoint for default landing page at '/' endpoint
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../src/index.html'));
+  res.sendFile(path.resolve(__dirname, '../dist/index.html'));
 });
 
 /**
