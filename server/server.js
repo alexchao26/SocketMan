@@ -51,7 +51,7 @@ app.use(expressStaticGzip(path.join(__dirname, '../dist'), {
   index: false, // skip over index.html
   // todo commented out for now b/c hashed bundle.js filename is needed to cache bust
   // todo   but this also requires html webpack plugin
-  // maxAge: 1000 * 2419200, // cache for 4 weeks
+  maxAge: 1000 * 2419200, // cache for 4 weeks
 }));
 
 // endpoint to grab a new question and answer
@@ -67,7 +67,7 @@ app.get('/newPrompt',
 
 // endpoint for default landing page at '/' endpoint
 app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../src/index.html'));
+  res.sendFile(path.resolve(__dirname, '../dist/index.html'));
 });
 
 /**

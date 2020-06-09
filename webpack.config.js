@@ -2,12 +2,16 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(),
+  new HtmlWebpackPlugin({
+    title: 'production',
+    template: path.join(__dirname, 'src/index.html'),
+  }),
   new CleanWebpackPlugin({
-    verbose: true,
-    cleanOnceBeforeBuildPatterns: ['!favicon.*'],
+    cleanOnceBeforeBuildPatterns: ['**/*', '!favicon.*'],
   }),
 ];
 if (process.env.NODE_ENV === 'production') {
@@ -15,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
     {
       filename: '[path].gz[query]',
       algorithm: 'gzip',
-      test: /\.(js|css|html)$/,
+      test: /\.(js|css)$/,
       deleteOriginalAssets: true,
     },
   ));
@@ -53,7 +57,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '/',
-    filename: 'bundle.js',
+    filename: 'app_[hash].js',
   },
   devServer: {
     historyApiFallback: true,
@@ -61,7 +65,7 @@ module.exports = {
     publicPath: 'http://localhost:3000/',
     hot: true,
     proxy: [{
-      context: ['/newPrompt'],
+      context: ['/newPrompt', '/'],
       target: 'http://localhost:3000',
     }],
     disableHostCheck: true,
