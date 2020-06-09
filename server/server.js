@@ -49,9 +49,9 @@ app.use(express.json());
 // the dist folder
 app.use(expressStaticGzip(path.join(__dirname, '../dist'), {
   index: false, // skip over index.html
-  // todo commented out for now b/c hashed bundle.js filename is needed to cache bust
-  // todo   but this also requires html webpack plugin
-  maxAge: 1000 * 2419200, // cache for 4 weeks
+  // cache for 4 weeks
+  // cache busting is achieved via the webpack build (html webpack plugin & content base hashing)
+  maxAge: 1000 * 2419200,
 }));
 
 // endpoint to grab a new question and answer
