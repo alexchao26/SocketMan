@@ -6,18 +6,18 @@ Websockets based, multiplayer hangman game. Hosted on ~~AWS at http://socketman.
 - Redux & Redux-Thunk
 - Websockets
 - ExpressJS Server
-- NoSQL Database (MongoDB)
-~~- AWS (Elastic Beanstalk)~~
+- NoSQL Database
+- ~~AWS (Elastic Beanstalk)~~
 - Webpack
-
+  - HMR
+  - GZip Compression
 
 ## Description
 - Play online with multiple players.
 - Either type or click letters to play the game.
 - For a new question press 'enter' or click on the NEW QUESTION text.
 
-
-## React Strucutre:
+## React Structure
 ```
 |--- App
   |--- Default Container
@@ -31,3 +31,7 @@ Websockets based, multiplayer hangman game. Hosted on ~~AWS at http://socketman.
       |--- HangViewer
       |--- GameOver
 ```
+## To Run Locally
+  1. Clone this repo
+  2. Install dependencies with `npm install`
+  3. Run development server w/ `npm run dev` OR run production build and server start together using `npm run build-start`

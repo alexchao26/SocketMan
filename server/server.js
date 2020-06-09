@@ -78,7 +78,7 @@ app.all('*', (req, res) => {
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   const defaultError = {
     log: 'Error caught by Global Error Handler',
-    message: 'Unknown Middleware Error occured',
+    message: 'Unknown Middleware Error occurred',
     status: 500,
   };
   const newError = { ...defaultError, ...err };
@@ -88,6 +88,6 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 server.listen(PORT, () => {
   if (process.env.NODE_ENV === 'development') {
-    console.log('Server listening on PORT:', PORT);
+    console.log('Server listening on PORT:', PORT); // eslint-disable-line no-console
   }
 });
