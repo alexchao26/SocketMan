@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+const expressStaticGzip = require('express-static-gzip');
 
 // place environment variables on process.env, invoked as early on in server as possible
 require('dotenv').config();
@@ -37,6 +38,8 @@ io.on('connection', (socket) => {
 
 app.use(express.json());
 
+
+app.use(expressStaticGzip('dist', { index: false }));
 // serve up statics (build, imgs); i.e. webpack output
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
@@ -83,5 +86,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 server.listen(PORT, () => {
-  if (process.env.NODE_ENV === 'development') console.log('Server listening on PORT:', PORT);
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Server listening on PORT:', PORT);
+  }
 });
