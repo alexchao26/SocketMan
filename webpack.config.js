@@ -1,9 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(),
+  new CleanWebpackPlugin({
+    verbose: true,
+    cleanOnceBeforeBuildPatterns: ['!favicon.*'],
+  }),
 ];
 if (process.env.NODE_ENV === 'production') {
   plugins.push(new CompressionPlugin(
@@ -16,10 +21,8 @@ if (process.env.NODE_ENV === 'production') {
   ));
 }
 
-
 module.exports = {
   entry: [
-    // 'react-hot-loader/patch',
     './src/index.js',
   ],
   mode: process.env.NODE_ENV,
