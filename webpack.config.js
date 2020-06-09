@@ -2,9 +2,23 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 
+const plugins = [
+  new webpack.HotModuleReplacementPlugin(),
+];
+if (process.env.NODE_ENV === 'production') {
+  plugins.push(new CompressionPlugin(
+    {
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: /\.(js|css|html)$/,
+      deleteOriginalAssets: true,
+    },
+  ));
+}
+
+
 module.exports = {
   entry: [
-
     // 'react-hot-loader/patch',
     './src/index.js',
   ],
@@ -43,33 +57,11 @@ module.exports = {
     contentBase: path.join(__dirname, 'src/'),
     publicPath: 'http://localhost:3000/',
     hot: true,
-    proxy: {
-      '/': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/newPrompt': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-      '/dist/imgs/': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-    },
+    proxy: [{
+      context: ['/newPrompt'],
+      target: 'http://localhost:3000',
+    }],
     disableHostCheck: true,
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new CompressionPlugin({
-      filename: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: /\.(js|css|html)$/,
-      deleteOriginalAssets: true,
-    }),
-  ],
+  plugins,
 };
