@@ -38,10 +38,11 @@ io.on('connection', (socket) => {
 
 app.use(express.json());
 
-
-app.use(expressStaticGzip('dist', { index: false }));
+// for requests coming into the '/' endpoint (via .use), serve up the gzipped version if found in
+// the dist folder
+app.use(expressStaticGzip(path.join(__dirname, '../dist'), { index: false }));
 // serve up statics (build, imgs); i.e. webpack output
-app.use(express.static(path.resolve(__dirname, '../dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 // endpoint to grab a new question and answer
 app.get('/newPrompt',
