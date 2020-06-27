@@ -38,7 +38,14 @@ module.exports = {
         loader: 'babel-loader',
         options: {
           presets: ['@babel/env', '@babel/preset-react'],
-          plugins: ['babel-plugin-styled-components'],
+          plugins: [[
+            'babel-plugin-styled-components',
+            {
+              ssr: false,
+              displayName: false,
+              filename: false,
+            },
+          ]],
         },
       },
       {
