@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 import LetterWrapper from './LetterWrapper';
-import Clue from '../components/Clue';
-import HangViewer from '../components/HangViewer';
-import HangingDude from '../components/HangingDude';
-import Header from '../components/Header';
-import GameOver from '../components/GameOver';
+import Clue from './Clue';
+import HangViewer from './HangViewer';
+import HangingDude from './HangingDude';
+import Header from './Header';
+import GameOver from './GameOver';
 import * as actions from '../actions/actions';
+
+// styled div container
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0;
+`;
 
 // map the dbAnswer and letters to check if the pressed letter if within the answer or not
 const mapStateToProps = (state) => ({
@@ -109,14 +118,14 @@ class GameRoom extends Component {
   render() {
     // return all the things and stuff to render
     return (
-      <div className="App">
+      <Container>
         <Header />
         <HangingDude />
         <LetterWrapper letterClicked={this.letterClicked} />
         <Clue />
         <HangViewer />
         <GameOver />
-      </div>
+      </Container>
     );
   }
 }

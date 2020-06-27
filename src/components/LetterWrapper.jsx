@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import LetterSelector from '../components/LetterSelector';
-import AnswerViewer from '../components/AnswerViewer';
+import LetterSelector from './LetterSelector';
+import AnswerViewer from './AnswerViewer';
 
 const mapStateToProps = (state) => ({
   letters: state.hangman.letters,
