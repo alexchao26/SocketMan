@@ -123,7 +123,7 @@ class GameRoom extends Component {
         <HangingDude />
         <LetterWrapper letterClicked={this.letterClicked} />
         <Clue />
-        <HangViewer />
+        {/* <HangViewer /> */}
         <GameOver />
       </Container>
     );
