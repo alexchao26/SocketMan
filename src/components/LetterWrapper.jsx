@@ -1,20 +1,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import LetterSelector from '../components/LetterSelector';
-import AnswerViewer from '../components/AnswerViewer';
+import styled from 'styled-components';
+
+import LetterSelector from './LetterSelector';
+import AnswerViewer from './AnswerViewer';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  max-width: 500px;
+`;
 
 const mapStateToProps = (state) => ({
   letters: state.hangman.letters,
 });
 
 const LetterWrapper = ({ letters, letterClicked }) => (
-  <div className="letter-wrapper">
+  <Container>
     <AnswerViewer />
     <LetterSelector
       letters={letters}
       letterClicked={letterClicked}
     />
-  </div>
+  </Container>
 );
 
 export default connect(mapStateToProps)(LetterWrapper);

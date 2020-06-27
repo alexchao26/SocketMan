@@ -1,34 +1,47 @@
 import React from 'react';
+import styled from 'styled-components';
 
-const LetterSelector = ({ letters, letterClicked }) => {
-  const letterObj = letters;
-  const letterArr = Object.keys(letterObj);
+const LetterContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 16px 0;
+`;
 
-  // generate buttons for each  letter
-  const letterButtonArr = [];
-  for (let i = 0; i < letterArr.length; i += 1) {
-    letterButtonArr.push(
-      <button
-        type="button"
-        key={`${letterArr[i]}_button`}
-        className="letter__button-item"
-        disabled={letterObj[letterArr[i]] ? 'disabled' : null}
-        onClick={
-          () => {
-            letterClicked(letterArr[i]);
-          }
-        }
-      >
-        {letterArr[i]}
-      </button>,
-    );
+const LetterButton = styled.button`
+  background-color: white;
+  border: 1px solid #424242;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  width: 48px;
+  margin: 0 2px 2px 2px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #3d00e0;
+    color: white;
   }
+  &:active {
+    outline: #90ee02 solid 1px;
+    opacity: .75;
+  }
+  &:disabled {
+    background-color: gray;
+  }
+`;
 
-  return (
-    <div className="letter__buttons">
-      {letterButtonArr}
-    </div>
-  );
-};
-
+const LetterSelector = ({ letters: lettersProp, letterClicked }) => (
+  <LetterContainer>
+    {Object.keys(lettersProp).map((letter) => (
+      <LetterButton
+        key={letter}
+        disabled={lettersProp[letter] ? 'disabled' : null}
+        onClick={() => { letterClicked(letter); }}
+      >
+        {letter}
+      </LetterButton>
+    ))}
+  </LetterContainer>
+);
 export default LetterSelector;

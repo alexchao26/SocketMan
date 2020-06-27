@@ -1,10 +1,9 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
 
-import './styles/App.css';
-import './styles/AppLg.css';
+import './App.css';
 
-import GameRoom from './containers/GameRoom';
+import GameRoom from './components/GameRoom';
 
 const App = () => (
   <GameRoom />
