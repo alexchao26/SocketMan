@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import LetterWrapper from './LetterWrapper';
 import Clue from './Clue';
-import HangViewer from './HangViewer';
+// import HangViewer from './HangViewer';
 import HangingDude from './HangingDude';
 import Header from './Header';
 import GameOver from './GameOver';
